@@ -63,10 +63,6 @@ class BitBoard {
 	}
 
 	isSet(row, column) {
-		console.log(row);
-		console.log(column);
-		console.log(this.state[row][column]);
-		console.log(this.state);
 		return this.state[row][column];
 	}
 
