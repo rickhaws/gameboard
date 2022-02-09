@@ -38,8 +38,8 @@
 }
 
 #Board {
-  width: 400px;
-  height: 400px;
+  width: 350px;
+  height: 350px;
   background-color: #ffbc00;
   border: 10px solid rgba(0,0,0,0.65);
   border-radius: 10px;
@@ -55,6 +55,7 @@
 }
 .dark { background-color: rgba(0,0,0,0.25); }
 .light { background-color: rgba(255,255,255,0.25); }
+.removed { background-color: rgba(255,255,255,1.00); }
 
 .piece {
   width: 40px;

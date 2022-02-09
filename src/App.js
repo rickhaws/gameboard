@@ -5,16 +5,20 @@ import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
 
 function Square(props) {
 	return (
-		<div class={props.color + " square"}></div>
+		<div className={props.color + " square"}></div>
 	);
 }
 
 function Row(props) {
-	let rowType = props.rowNumber % 2;
+	let rowType = props.row % 2;
 	let elements = [];
-	for (let i =0; i<8; i++) {
-		let color = i % 2 !== props.rowType ? "light" : "dark";
-		elements[i] = Square({color: color});
+	for (let column=0; column<props.active.size; column++) {
+		let color="removed";
+		if (props.active.isSet(props.row, column)) {
+			color = column % 2 !== rowType ? "light" : "dark";
+		}
+
+		elements[column] = <Square color={color}/>;
 	}
 	elements.push(<br/>);
 	return elements;
@@ -22,8 +26,8 @@ function Row(props) {
 
 function Board(props) {
 	let rows = [];
-	for (let i=0; i<8; i++) {
-		rows.push(Row({rowNumber: i}));
+	for (let i=0; i<props.active.size; i++) {
+		rows.push(<Row row={i} active={props.active}/>);
 	}
 	return rows;
 }
@@ -58,6 +62,14 @@ class BitBoard {
 		}
 	}
 
+	isSet(row, column) {
+		console.log(row);
+		console.log(column);
+		console.log(this.state[row][column]);
+		console.log(this.state);
+		return this.state[row][column];
+	}
+
 	static hexagon() {
 		let bb = new BitBoard();
 		let n=bb.size;
@@ -69,33 +81,15 @@ class BitBoard {
 				bb.set(i, j);
 			}
 		}
-		
-		// Add a specialized print function
-		bb.print = () => {
-			let lines = [];
-			console.log(lines);
-			for (let i=0; i<n; i++) {
-				lines[i] = " " * i;
-				console.log(lines);
-				for (let j=0; j<n; j++) {
-					lines[i] += bb[i][j] + " ";
-					console.log(lines);
-				}
-			}
-			console.log(lines);
-			return lines;
-		}
 		return bb;
 	}
 }
 
 function App() {
-	let activeSquares = BitBoard.hexagon();
   	return (
     <div id="Board">
-		{Board()}
+		<Board active={BitBoard.hexagon()}/>
 		<h1>Hello {Date.now()}</h1>
-		{/* {activeSquares.print()} */}
   	</div>
   );
 }
