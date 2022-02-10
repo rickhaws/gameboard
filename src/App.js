@@ -2,10 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 import * as Pieces from './Pieces'
 import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
+import React from 'react';
 
 function Square(props) {
 	return (
-		<div className={props.color + " square"}></div>
+		<div className={props.color + " square"} onClick={props.onClick}></div>
 	);
 }
 
@@ -18,7 +19,7 @@ function Row(props) {
 			color = column % 2 !== rowType ? "light" : "dark";
 		}
 
-		elements[column] = <Square color={color}/>;
+		elements[column] = <Square color={color} onClick={() => props.onClick(props.row, column)}/>;
 	}
 	elements.push(<br/>);
 	return elements;
@@ -27,7 +28,8 @@ function Row(props) {
 function Board(props) {
 	let rows = [];
 	for (let i=0; i<props.active.size; i++) {
-		rows.push(<Row row={i} active={props.active}/>);
+		rows.push(<Row row={i} active={props.active}
+			onClick={props.onClick}/>);
 	}
 	return rows;
 }
@@ -82,9 +84,18 @@ class BitBoard {
 }
 
 function App() {
+	const [board, setBoard] = React.useState(BitBoard.hexagon());
+	const [time, setTime] = React.useState(Date.now());
+	const update = (i,j) => {
+		console.log("update", i, j);
+		board.clear(i,j);
+		console.log(board.state);
+		setBoard(board);
+		setTime(Date.now());
+	}
   	return (
     <div id="Board">
-		<Board active={BitBoard.hexagon()}/>
+		<Board active={board} onClick={update}/>
 		<h1>Hello {Date.now()}</h1>
   	</div>
   );
