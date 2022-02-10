@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import * as Pieces from './Pieces'
 import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
+import Board from './components/Board'
 import React from 'react';
 
 function Square(props) {
@@ -25,7 +26,7 @@ function Row(props) {
 	return elements;
 }
 
-function Board(props) {
+function DynamicBoard(props) {
 	let rows = [];
 	for (let i=0; i<props.active.size; i++) {
 		rows.push(<Row row={i} active={props.active}
@@ -94,10 +95,13 @@ function App() {
 		setTime(Date.now()); // Won't update without this line
 	}
   	return (
-    <div id="Board">
-		<Board active={board} onClick={update}/>
-		<h1>Hello {Date.now()}</h1>
-  	</div>
+		<React.Fragment>
+			<Board />
+		</React.Fragment>
+	// <div id="Board">
+	// 	<DynamicBoard active={board} onClick={update}/>
+	// 	<h1>Hello {Date.now()}</h1>
+  	// </div>
   );
 }
 
