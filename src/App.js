@@ -90,8 +90,8 @@ function App() {
 		console.log("update", i, j);
 		board.clear(i,j);
 		console.log(board.state);
-		setBoard(board);
-		setTime(Date.now());
+		setBoard(board); // Doesn't update UI because board refers to same object
+		setTime(Date.now()); // Won't update without this line
 	}
   	return (
     <div id="Board">
