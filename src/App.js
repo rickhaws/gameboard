@@ -84,6 +84,7 @@ class BitBoard {
 	}
 }
 
+
 function App() {
 	const [board, setBoard] = React.useState(BitBoard.hexagon());
 	const [time, setTime] = React.useState(Date.now());

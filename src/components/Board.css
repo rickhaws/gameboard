@@ -1,23 +1,56 @@
+.main {
+  display:flex;
+  --s: 100px; /* size */
+  --r: 1; /* ratio */
+  
+  /* clip-path */
+  --h: 0.25;  
+  --v: 0.35;  
+  --hc:calc(clamp(0,var(--h),0.5) * var(--s)) ;
+  --vc:calc(clamp(0,var(--v),0.5) * var(--s) * var(--r)); 
+  
+  /*margin */
+  --mv: 4px; /* vertical */
+  --mh: calc(var(--mv) + (var(--s) - 2*var(--hc))/2); /* horizontal */
+  /* for the float*/
+  --f: calc(2*var(--s)*var(--r) + 4*var(--mv)  - 2*var(--vc) - 2px);
+  --nr:5;
+}
+
 .container {
-    --d: 6.5em; /* image size */
-    --rel: 1; /* how much extra space we want between images, 1 = one image size */
-    --r: calc(.5*(1 + var(--rel))*var(--d)/var(--tan)); /* circle radius */
-    --s: calc(2*var(--r) + var(--d)); /* container size */
-    position: relative;
-    width: var(--s); height: var(--s);
-    background: silver /* to show images perfectly fit in container */
-  }
-  
-  .container a {
-    position: absolute;
-    top: 50%; left: 50%;
-    margin: calc(-.5*var(--d)); /* half of image width */
-    width: var(--d); height: var(--d);
-    --az: calc(var(--i)*1turn/var(--m)); /* azimuth: (i/m) * (1 complete circle) */
-    transform: 
-      rotate(var(--az)) /* rotate to the angle where it should be placed */
-      translate(var(--r)) /* translate in that direction by radius */
-      rotate(calc(-1*var(--az))) /* unrotate image */
-  }
-  
-  img { max-width: 100% }
+  font-size: 0; /*disable white space between inline block element */
+  max-width:calc(var(--nr)*(var(--s) + 2*var(--mh)));
+  margin:0 auto;
+  text-align:center;
+}
+
+.container div {
+  width: var(--s);
+  margin: var(--mv) var(--mh);
+  height: calc(var(--s)*var(--r)); 
+  display: inline-block;
+  font-size:initial;
+  clip-path: polygon(var(--hc) 0, calc(100% - var(--hc)) 0,100% var(--vc),100% calc(100% - var(--vc)), calc(100% - var(--hc)) 100%,var(--hc) 100%,0 calc(100% - var(--vc)),0 var(--vc));
+  background: red;
+  margin-bottom: calc(var(--mv) - var(--vc)); 
+}
+.container div:nth-child(odd) {
+  background:green;
+}
+.container::before ,
+.container i{
+  content: "";
+  width: calc(50% - var(--mh) - var(--s)/2);
+  float: left;
+  height: calc(var(--f)*(var(--nr) - 1)/2);
+  shape-outside: linear-gradient(to bottom right,#000 49%,#0000 0);
+}
+.container i {
+  float:right;
+  shape-outside: linear-gradient(to bottom left,#000 49%,#0000 0);
+}
+
+.panel {position: fixed;top: 20px;right: 20px;padding: 10px;border: 1px solid;border-radius: 10px;background: #fff;font-family: sans-serif;opacity:.5}
+.panel:hover {opacity:1}
+.panel > div:not(:last-child) {border-bottom: 1px solid;padding-bottom: 10px;margin-bottom: 10px;}
+*,*::before {transition:0.5s linear}
